@@ -36,30 +36,31 @@ def encrypt(text, key):
         text = text + "*" * ((key[0] * key[1]) - len(text))
     arr = []
     for i in range(key[0]):
-        arr.append(list(text[i * key[1] : i * key[1] + key[1]]))
+        arr.append(list(text[i * key[1]:i * key[1] + key[1]]))
     s = ""
     s_row = 0
     s_col = 0
     e_row = key[0] - 1
     e_col = key[1] - 1
     start = 0
+    text_length = len(text)
     while (e_row >= s_row and e_col >= s_col):
-        if (start == 0 and key[2] == Corner.TOP_LEFT) or start:
+        if (start or (start == 0 and key[2] == Corner.TOP_LEFT)) and (len(s) < text_length):
             start = 1
             for i in range(s_col, e_col + 1):
                 s = s + arr[s_row][i]
             s_row += 1
-        if (start == 0 and key[2] == Corner.TOP_RIGHT) or start:
+        if (start or (start == 0 and key[2] == Corner.TOP_RIGHT)) and (len(s) < text_length):
             start = 1
             for i in range(s_row, e_row + 1):
                 s = s + arr[i][e_col]
             e_col -= 1
-        if (start == 0 and key[2] == Corner.BOTTOM_RIGHT) or start:
+        if (start or (start == 0 and key[2] == Corner.BOTTOM_RIGHT)) and (len(s) < text_length):
             start = 1
             for i in range(e_col, s_col - 1, -1):
                 s = s + arr[e_row][i]
             e_row -= 1
-        if (start == 0 and key[2] == Corner.BOTTOM_LEFT) or start:
+        if (start or (start == 0 and key[2] == Corner.BOTTOM_LEFT)) and (len(s) < text_length):
             start = 1
             for i in range(e_row, s_row - 1, -1):
                 s = s + arr[i][s_col]
