@@ -27,47 +27,44 @@ Notes:
 
 from mock1common import EncryptKey, Corner
 
-
 def encrypt(text, key):
     if (not isinstance(text, str)) or (not isinstance(key, EncryptKey)):
         raise TypeError
-    elif (key[0] * key[1] < len(text)) or (key[0] * key[1] <= 0):
+    if (key[0] * key[1] < len(text)) or (key[0] * key[1] <= 0):
         raise ValueError
-    else:
-        if len(text) < key[0] * key[1]:
-            text = text + "*" * ((key[0] * key[1]) - len(text))
-        arr = []
-        for i in range(key[0]):
-            arr.append(list(text[i * key[1]:i * key[1] + key[1]]))
-        s = ""
-        s_row = 0
-        s_col = 0
-        e_row = key[0] - 1
-        e_col = key[1] - 1
-        start = 0
-        while (e_row >= s_row and e_col >= s_col):
-            if (start == 0 and key[2] == Corner.TOP_LEFT) or start:
-                start = 1
-                for i in range(s_col, e_col + 1):
-                    s = s + arr[s_row][i]
-                s_row += 1
-            if (start == 0 and key[2] == Corner.TOP_RIGHT) or start:
-                start = 1
-                for i in range(s_row, e_row + 1):
-                    s = s + arr[i][e_col]
-                e_col -= 1
-            if (start == 0 and key[2] == Corner.BOTTOM_RIGHT) or start:
-                start = 1
-                for i in range(e_col, s_col - 1, -1):
-                    s = s + arr[e_row][i]
-                e_row -= 1
-            if (start == 0 and key[2] == Corner.BOTTOM_LEFT) or start:
-                start = 1
-                for i in range(e_row, s_row - 1, -1):
-                    s = s + arr[i][s_col]
-                s_col += 1
+    if len(text) < key[0] * key[1]:
+        text = text + "*" * ((key[0] * key[1]) - len(text))
+    arr = []
+    for i in range(key[0]):
+        arr.append(list(text[i * key[1] : i * key[1] + key[1]]))
+    s = ""
+    s_row = 0
+    s_col = 0
+    e_row = key[0] - 1
+    e_col = key[1] - 1
+    start = 0
+    while (e_row >= s_row and e_col >= s_col):
+        if (start == 0 and key[2] == Corner.TOP_LEFT) or start:
+            start = 1
+            for i in range(s_col, e_col + 1):
+                s = s + arr[s_row][i]
+            s_row += 1
+        if (start == 0 and key[2] == Corner.TOP_RIGHT) or start:
+            start = 1
+            for i in range(s_row, e_row + 1):
+                s = s + arr[i][e_col]
+            e_col -= 1
+        if (start == 0 and key[2] == Corner.BOTTOM_RIGHT) or start:
+            start = 1
+            for i in range(e_col, s_col - 1, -1):
+                s = s + arr[e_row][i]
+            e_row -= 1
+        if (start == 0 and key[2] == Corner.BOTTOM_LEFT) or start:
+            start = 1
+            for i in range(e_row, s_row - 1, -1):
+                s = s + arr[i][s_col]
+            s_col += 1
     return s
 
 def test_encrypt():
     assert "ao***?urhow y e" == encrypt("how are you?", EncryptKey(3, 5, Corner.TOP_RIGHT))
-
