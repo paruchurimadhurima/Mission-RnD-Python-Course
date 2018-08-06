@@ -56,13 +56,13 @@ def encrypt(text, key):
                 s = s + arr[i][e_col]
                 s_length += 1
             e_col -= 1
-        if (start and s_length < text_length) or (start == 0 and key[2] == Corner.BOTTOM_RIGHT):
+        if(start and s_length < text_length) or (start == 0 and key[2] == Corner.BOTTOM_RIGHT):
             start = 1
             for i in range(e_col, s_col - 1, -1):
                 s = s + arr[e_row][i]
                 s_length += 1
             e_row -= 1
-        if (start and s_length < text_length) or (start == 0 and key[2] == Corner.BOTTOM_LEFT):
+        if(start and s_length < text_length) or (start == 0 and key[2] == Corner.BOTTOM_LEFT):
             start = 1
             for i in range(e_row, s_row - 1, -1):
                 s = s + arr[i][s_col]
