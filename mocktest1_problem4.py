@@ -23,40 +23,39 @@ from mock1common import EncryptKey, Corner
 def decrypt(encrypted_text, key):
     if (not isinstance(encrypted_text, str)) or (not isinstance(key, EncryptKey)):
         raise TypeError
-    if (key[0] * key[1] != len(encrypted_text)) or (key[0] * key[1] <= 0):
+    if (key.rows * key.cols != len(encrypted_text)) or (key.rows * key.cols <= 0):
         raise ValueError
-    strarr = [i for i in range(key[0] * key[1])]
+    strarr = [i for i in range(key.rows * key.cols)]
     text_len = len(encrypted_text)
     start = 0
     cur_ind = 0
     s_row = 0
     s_col = 0
-    e_row = key[0] - 1
-    e_col = key[1] - 1
-    t_col = key[1]
+    e_row = key.rows - 1
+    e_col = key.cols - 1
     while (e_row >= s_row and e_col >= s_col):
-        if(start and cur_ind < text_len) or (start == 0 and key[2] == Corner.TOP_LEFT):
+        if(start and cur_ind < text_len) or (start == 0 and key.corner == Corner.TOP_LEFT):
             start = 1
             for i in range(s_col, e_col + 1):
-                strarr[(s_row * t_col) + i] = encrypted_text[cur_ind]
+                strarr[(s_row * key.cols) + i] = encrypted_text[cur_ind]
                 cur_ind += 1
             s_row += 1
-        if(start and cur_ind < text_len) or (start == 0 and key[2] == Corner.TOP_RIGHT):
+        if(start and cur_ind < text_len) or (start == 0 and key.corner == Corner.TOP_RIGHT):
             start = 1
             for i in range(s_row, e_row + 1):
-                strarr[(i * t_col) + e_col] = encrypted_text[cur_ind]
+                strarr[(i * key.cols) + e_col] = encrypted_text[cur_ind]
                 cur_ind += 1
             e_col -= 1
-        if(start and cur_ind < text_len) or (start == 0 and key[2] == Corner.BOTTOM_RIGHT):
+        if(start and cur_ind < text_len) or (start == 0 and key.corner == Corner.BOTTOM_RIGHT):
             start = 1
             for i in range(e_col, s_col - 1, -1):
-                strarr[(e_row * t_col) + i] = encrypted_text[cur_ind]
+                strarr[(e_row * key.cols) + i] = encrypted_text[cur_ind]
                 cur_ind += 1
             e_row -= 1
-        if(start and cur_ind < text_len) or (start == 0 and key[2] == Corner.BOTTOM_LEFT):
+        if(start and cur_ind < text_len) or (start == 0 and key.corner == Corner.BOTTOM_LEFT):
             start = 1
             for i in range(e_row, s_row - 1, -1):
-                strarr[(i * t_col) + s_col] = encrypted_text[cur_ind]
+                strarr[(i * key.cols) + s_col] = encrypted_text[cur_ind]
                 cur_ind += 1
             s_col += 1
     strarr = "".join(strarr).replace("*","")
