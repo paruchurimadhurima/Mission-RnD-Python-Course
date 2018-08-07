@@ -30,39 +30,39 @@ from mock1common import EncryptKey, Corner
 def encrypt(text, key):
     if (not isinstance(text, str)) or (not isinstance(key, EncryptKey)):
         raise TypeError
-    if (key[0] * key[1] < len(text)) or (key[0] * key[1] <= 0):
+    if (key.rows * key.cols < len(text)) or (key.rows * key.cols <= 0):
         raise ValueError
-    if len(text) < key[0] * key[1]:
-        text = text + "*" * ((key[0] * key[1]) - len(text))
-    arr = [list(text[i*key[1] : i*key[1]+key[1]]) for i in range(key[0])]
+    if len(text) < key.rows * key.cols:
+        text = text + "*" * ((key.rows * key.cols) - len(text))
+    arr = [list(text[i*key.cols : i*key.cols+key.cols]) for i in range(key.rows)]
     s = ""
     s_length = 0
     text_length = len(text)
     start = 0
     s_row = 0
     s_col = 0
-    e_row = key[0] - 1
-    e_col = key[1] - 1
+    e_row = key.rows - 1
+    e_col = key.cols - 1
     while (e_row >= s_row and e_col >= s_col):
-        if(start and s_length < text_length) or (start == 0 and key[2] == Corner.TOP_LEFT):
+        if(start and s_length < text_length) or (start == 0 and key.corner == Corner.TOP_LEFT):
             start = 1
             for i in range(s_col, e_col + 1):
                 s = s + arr[s_row][i]
                 s_length += 1
             s_row += 1
-        if(start and s_length < text_length) or (start == 0 and key[2] == Corner.TOP_RIGHT):
+        if(start and s_length < text_length) or (start == 0 and key.corner == Corner.TOP_RIGHT):
             start = 1
             for i in range(s_row, e_row + 1):
                 s = s + arr[i][e_col]
                 s_length += 1
             e_col -= 1
-        if(start and s_length < text_length) or (start == 0 and key[2] == Corner.BOTTOM_RIGHT):
+        if (start and s_length < text_length) or (start == 0 and key.corner == Corner.BOTTOM_RIGHT):
             start = 1
             for i in range(e_col, s_col - 1, -1):
                 s = s + arr[e_row][i]
                 s_length += 1
             e_row -= 1
-        if(start and s_length < text_length) or (start == 0 and key[2] == Corner.BOTTOM_LEFT):
+        if (start and s_length < text_length) or (start == 0 and key.corner == Corner.BOTTOM_LEFT):
             start = 1
             for i in range(e_row, s_row - 1, -1):
                 s = s + arr[i][s_col]
