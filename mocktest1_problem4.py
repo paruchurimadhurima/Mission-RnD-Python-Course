@@ -23,7 +23,7 @@ from mock1common import EncryptKey, Corner
 def decrypt(encrypted_text, key):
     if (not isinstance(encrypted_text, str)) or (not isinstance(key, EncryptKey)):
         raise TypeError
-    if (key.rows * key.cols != len(encrypted_text)) or (key.rows * key.cols <= 0):
+    if (key.rows * key.cols != len(encrypted_text)) or (key.rows * key.cols <= 0) or (not isinstance(key.corner, Corner)):
         raise ValueError
     strarr = [i for i in range(key.rows * key.cols)]
     text_len = len(encrypted_text)
