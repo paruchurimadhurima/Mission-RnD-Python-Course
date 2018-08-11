@@ -30,7 +30,7 @@ from mock1common import EncryptKey, Corner
 def encrypt(text, key):
     if (not isinstance(text, str)) or (not isinstance(key, EncryptKey)):
         raise TypeError
-    if (key.rows * key.cols < len(text)) or (key.rows * key.cols <= 0):
+    if (key.rows * key.cols < len(text)) or (key.rows * key.cols <= 0) or (not isinstance(key.corner, Corner)):
         raise ValueError
     if len(text) < key.rows * key.cols:
         text = text + "*" * ((key.rows * key.cols) - len(text))
