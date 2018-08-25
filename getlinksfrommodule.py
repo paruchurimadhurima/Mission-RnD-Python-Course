@@ -11,12 +11,10 @@ def links_in_directory(directory_path):
         for pyfile in os.listdir(directory_path):
             if pyfile.endswith(".py"):
                 with open(os.path.abspath(pyfile)) as f:
-                    lines = f.read().lower()
+                    lines = f.read()
                     if "http" in lines:
                         print(pyfile)
-                        for link in re.findall(r'(https?://[^\s]+)', lines):
-                            print(link)
-                        print("\n")
+                        print("\n".join(re.findall(r'(https?://[^\s]+)', lines))+"\n")
 
 def main(argv=None):
     if argv is None:
