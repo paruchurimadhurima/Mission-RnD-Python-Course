@@ -1,18 +1,18 @@
+import glob
+import sys
 import os
 import re
-import sys
 
 
 def links_in_directory(directory_path):
     os.chdir(directory_path)
-    for file_name in os.listdir(directory_path):
-        if file_name.endswith(".py"):
-            with open(os.path.abspath(file_name)) as f:
-                file_data = f.read()
-                links = re.findall(r'(https?://[^\s]+)', file_data)
-                if links:
-                    print(file_name)
-                    print("\n".join(links)+"\n")
+    for file_name in glob.glob("*.py"):
+        with open(file_name) as f:
+            file_data = f.read()
+            links = re.findall(r'(https?://[^\s]+)', file_data)
+            if links:
+                print(file_name)
+                print("\n".join(links)+"\n")
 
 
 def main(argv=None):
