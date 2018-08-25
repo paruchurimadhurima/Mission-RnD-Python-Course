@@ -1,12 +1,10 @@
 import glob
 import sys
-import os
 import re
 
 
 def links_in_directory(directory_path):
-    os.chdir(directory_path)
-    for file_name in glob.glob("*.py"):
+    for file_name in glob.glob(directory_path + "/*.py"):
         with open(file_name) as f:
             file_data = f.read()
             links = re.findall(r'(https?://[^\s]+)', file_data)
