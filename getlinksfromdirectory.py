@@ -10,10 +10,10 @@ def links_in_directory(directory_path):
         with open(file_name) as f:
             file_data = f.read()
             links = re.findall(r'(https?://[^\s]+)', file_data)
-            if links and prev != cur:
-                print("\nUnit " + cur)
-                prev = cur
             if links:
+                if prev != cur:
+                    print("\nUnit " + cur)
+                    prev = cur
                 print("\n".join(links))
 
 
