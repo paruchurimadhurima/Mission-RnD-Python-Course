@@ -4,13 +4,17 @@ import re
 
 
 def links_in_directory(directory_path):
-    for file_name in glob.glob(directory_path + "/*.py"):
+    prev = -1
+    for file_name in sorted(glob.glob(directory_path + "/unit*.py")):
+        cur = (re.search(r'[\d]+', file_name.replace(directory_path, "")).group())
         with open(file_name) as f:
             file_data = f.read()
             links = re.findall(r'(https?://[^\s]+)', file_data)
+            if links and prev != cur:
+                print("\nUnit " + cur)
+                prev = cur
             if links:
-                print(file_name)
-                print("\n".join(links)+"\n")
+                print("\n".join(links))
 
 
 def main(argv=None):
